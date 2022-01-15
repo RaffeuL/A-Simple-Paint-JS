@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="pt" xmlns="http://www.w3.org/1999/html">
+    <head>
+        <meta charset="utf8">
+        <meta name="viewport" content="width = device-width, initial-scale = 1">
+
+        <title>Paint 2</title>
+        <link rel="stylesheet" type="text/css" href="css/mainstyle.css">
+        <script src="js/index.js"></script>
+    </head>
+    <body>
+        <div class="wrapper">
+            <div class="toolbar">
+
+                <a href="#" id="point" onclick="changeTools('point')">
+                    <button >Point</button>
+                </a>
+
+                <a href="#" id="line" onclick="changeTools('line')">
+                    <button>Line</button>
+                </a>
+
+                <a href="#" id="rectangle" onclick="changeTools('rectangle')">
+                    <button>Rectangle</button>
+                </a>
+
+                <a href="#" id="circle" onclick="changeTools('circle')">
+                    <button>Circle</button>
+                </a>
+
+                <a href="#" id="ellipse" onclick="changeTools('ellipse')">
+                    <button>Ellipse</button>
+                </a>
+
+                <a href="#" id="polygon" onclick="changeTools('polygon')">
+                    <button>Polygon</button>
+                </a>
+
+                <a href="#" id="clear" onclick="clearCanvas()">
+                    <button>Clear</button>
+                </a>
+            </div></br>
+            <canvas id="my-canvas" width="500" height="500"></canvas>
+        </div>
+    </body>
+</html>

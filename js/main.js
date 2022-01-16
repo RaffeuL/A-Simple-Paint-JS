@@ -1,5 +1,6 @@
 const canvas = document.querySelector("#my-canvas");
 
+//Botões das ferramentas
 const pixelBtn = document.getElementById("pixel-btn");
 const lineBtn = document.getElementById("line-btn");
 
@@ -7,7 +8,7 @@ const ctx = canvas.getContext("2d");
 const size = 10;
 
 window.addEventListener('load', () => { //Função principal, todas as funções de draw vem aqui dentro
-    canvas.addEventListener('click', handleFunction);
+    canvas.addEventListener('click', functionManager);
 
     ctx.canvas.width = 15*size;
     ctx.canvas.height = 15*size;
@@ -80,12 +81,14 @@ window.addEventListener('load', () => { //Função principal, todas as funções
     }
 
 
-    function handleFunction(e){ //TODO: Mudar o nome da função e criar um switch
-        if(actualTool === 'pixel'){
-            canvas.addEventListener("click", drawPixel(e));
-        }
-        if(actualTool === 'line'){
-            canvas.addEventListener("click", drawLine(e));
+    function functionManager(e){
+        switch (actualTool) {
+            case "pixel":
+                canvas.addEventListener("click", drawPixel(e));
+                break
+            case "line":
+                canvas.addEventListener("click", drawLine(e));
+                break
         }
     }
 

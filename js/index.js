@@ -7,8 +7,8 @@ let fillColor = 'black';
 let line_Width = 2;
 let polygonSides = 6;
 let currentTool = 'brush';
-let canvasWidth = 600;
-let canvasHeight = 600;
+let canvasWidth = 100;
+let canvasHeight = 100;
 let firstClick = true;
 
 class ShapeBoundingBox{

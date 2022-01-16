@@ -29,6 +29,7 @@
 #my-canvas{
     width: 100%;
     border: 3px solid #000000;
+    image-rendering: pixelated;
 }
 
 #img-data-div{

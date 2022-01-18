@@ -1,4 +1,5 @@
 import {line} from "./algorithms/line.js";
+import {circle, getDistance} from "./algorithms/circle.js"
 
 const canvas = document.querySelector("#my-canvas");
 
@@ -6,6 +7,7 @@ const canvas = document.querySelector("#my-canvas");
 //Botões das ferramentas
 const pixelBtn = document.getElementById("pixel-btn");
 const lineBtn = document.getElementById("line-btn");
+const circleBtn = document.getElementById("circle-btn");
 const curveBtn = document.getElementById("curve-btn");
 const drawBtn = document.getElementById("draw-btn");
 const clearBtn = document.getElementById("clear-btn");
@@ -33,6 +35,9 @@ window.addEventListener('load', () => { //Função principal, todas as funções
     });
     curveBtn.addEventListener('click', function (){
         setTool('curve');
+    });
+    circleBtn.addEventListener('click', function (){
+        setTool('circle');
     });
     drawBtn.addEventListener('click', confirmDraw);
     clearBtn.addEventListener('click', clearCanvas);
@@ -93,6 +98,20 @@ window.addEventListener('load', () => { //Função principal, todas as funções
         }
     }
 
+    function start_circle(e){
+        let point = getMousePos(canvas, e);
+        if(points.length === 0) {
+            points.push(point);
+            pixel(point.x, point.y);
+        }else{
+            points.push(point);
+            let radius = getDistance(points[0], points[1]);
+            circle(ctx, radius, points[0]);
+            deletePoint(points[0].x, points[0].y);
+            points = [];
+        }
+    }
+
     function curve(){
         points.push(markedPoints[1]);
 
@@ -144,6 +163,8 @@ window.addEventListener('load', () => { //Função principal, todas as funções
             case "curve":
                 canvas.addEventListener("click", startCurve(e));
                 break
+            case "circle":
+                canvas.addEventListener("click", start_circle(e));
         }
     }
 

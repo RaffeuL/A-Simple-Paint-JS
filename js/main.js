@@ -1,10 +1,11 @@
+import {line} from "./algorithms/line.js";
 const canvas = document.querySelector("#my-canvas");
 
 //Botões das ferramentas
 const pixelBtn = document.getElementById("pixel-btn");
 const lineBtn = document.getElementById("line-btn");
 
-const ctx = canvas.getContext("2d");
+export const ctx = canvas.getContext("2d");
 const size = 10;
 
 window.addEventListener('load', () => { //Função principal, todas as funções de draw vem aqui dentro
@@ -50,25 +51,7 @@ window.addEventListener('load', () => { //Função principal, todas as funções
         ctx.fillStyle = 'black';
     }
 
-    function line(x0, y0, x1, y1){
-        let dx = x1 - x0;
-        let dy = y1 - y0;
-
-        let m = dy / dx;
-        let e = m - (1/2);
-
-        while(x0 < x1){
-            if(e >= 0){
-                y0++;
-                e--;
-            }
-            x0++;
-            e += m;
-            ctx.fillRect(x0, y0, 1, 1);
-        }
-    }
-
-    function drawLine(e){
+    function startLine(e){
         if(point.length < 1){
             point.push(getMousePos(canvas, e)); //Adiciona um ponto no array
             drawInitialPixel(point[0].x , point[0].y);
@@ -87,7 +70,7 @@ window.addEventListener('load', () => { //Função principal, todas as funções
                 canvas.addEventListener("click", drawPixel(e));
                 break
             case "line":
-                canvas.addEventListener("click", drawLine(e));
+                canvas.addEventListener("click", startLine(e));
                 break
         }
     }

@@ -18,11 +18,6 @@ const size = 10;
 export let points = [];
 export let markedPoints = [];
 
-//variáveis pro circulo
-export let first_click = true;
-export let first_point = [];
-export let second_point = [];
-
 window.addEventListener('load', () => { //Função principal, todas as funções de draw vem aqui dentro
     canvas.addEventListener('click', functionManager);
 
@@ -105,16 +100,15 @@ window.addEventListener('load', () => { //Função principal, todas as funções
 
     function start_circle(e){
         let point = getMousePos(canvas, e);
-        if(first_click === true) {
-            first_point = point;
-            first_click = false;
+        if(points.length === 0) {
+            points.push(point);
             pixel(point.x, point.y);
         }else{
-            second_point = point;
-            let radius = getDistance(first_point, second_point);
-            circle(ctx, radius, first_point);
-            first_click = true;
-            deletePoint(first_point.x, first_point.y);
+            points.push(point);
+            let radius = getDistance(points[0], points[1]);
+            circle(ctx, radius, points[0]);
+            deletePoint(points[0].x, points[0].y);
+            points = [];
         }
     }
 

@@ -1,6 +1,3 @@
-import {ctx, first_point} from "../main.js";
-
-
 function circlePoints(ctx, x, y, first_point){
     ctx.fillStyle = 'black';
     ctx.fillRect(x + first_point.x, y + first_point.y, 1, 1);

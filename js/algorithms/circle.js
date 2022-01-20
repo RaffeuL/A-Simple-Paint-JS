@@ -1,5 +1,7 @@
 function circlePoints(ctx, x, y, first_point){
     ctx.fillStyle = 'black';
+    first_point.x = Math.round(first_point.x);
+    first_point.y = Math.round(first_point.y);
     ctx.fillRect(x + first_point.x, y + first_point.y, 1, 1);
     ctx.fillRect(y + first_point.x, x + first_point.y, 1, 1);
     ctx.fillRect(y + + first_point.x, (-x) + first_point.y, 1, 1);
@@ -18,19 +20,21 @@ export function circle(ctx, radius, first_point) {
     //circlePoints(ctx, x, y);
     while (y >= x){
         if (d < 0){
-            d += 2 * x + 3;
+            d += 2 * x + 1;
         }else{
-            d += 2 * (x - y) + 5;
             y--;
+            d += 2 * (x - y + 1);
         }
+        circlePoints(ctx, Math.floor(x), Math.floor(y), first_point);
         x++;
-        circlePoints(ctx, x, y, first_point);
     }
 }
 
 export function getDistance(point_1, point_2){
-    let a = point_1.x - point_2.x;
-    let b = point_1.y - point_2.y;
-    return Math.sqrt( a*a + b*b );
+    let a = Math.abs(point_1.x - point_2.x);
+    let b = Math.abs(point_1.y - point_2.y);
+    let radius = Math.sqrt((a*a) + (b*b));
+    radius = Math.round(radius);
+    return radius;
 }
 

@@ -102,12 +102,12 @@ window.addEventListener('load', () => { //Função principal, todas as funções
         let point = getMousePos(canvas, e);
         if(points.length === 0) {
             points.push(point);
-            pixel(point.x, point.y);
+            drawInitialPixel(point.x, point.y);
         }else{
             points.push(point);
             let radius = getDistance(points[0], points[1]);
-            circle(ctx, radius, points[0]);
             deletePoint(points[0].x, points[0].y);
+            circle(ctx, radius, points[0]);
             points = [];
         }
     }

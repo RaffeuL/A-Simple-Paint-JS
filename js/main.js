@@ -1,8 +1,8 @@
 import {line} from "./algorithms/line.js";
+import {curve} from './algorithms/curve.js';
 import {circle, getDistance} from "./algorithms/circle.js"
 
 const canvas = document.querySelector("#my-canvas");
-
 
 //Botões das ferramentas
 const pixelBtn = document.getElementById("pixel-btn");
@@ -17,6 +17,8 @@ const size = 10;
 
 export let points = [];
 export let markedPoints = [];
+
+let array = [1,2,3];
 
 window.addEventListener('load', () => { //Função principal, todas as funções de draw vem aqui dentro
     canvas.addEventListener('click', functionManager);
@@ -112,45 +114,10 @@ window.addEventListener('load', () => { //Função principal, todas as funções
         }
     }
 
-    function curve(){
-        points.push(markedPoints[1]);
-
-        for(const point in points) {
-            deletePoint(points[point].x, points[point].y);
-        }
-
-        const numLines = points.length / 2 + 2;
-        for (let i = 1; i <= numLines; i++) {
-            const t = (1.0 / numLines) * i;
-            let a = bezierPoint(t);
-            line(Math.floor(markedPoints[0].x), Math.floor(markedPoints[0].y), Math.floor(a.x), Math.floor(a.y));
-            markedPoints[0] = a;
-        }
-        markedPoints = [];
-        points = [];
-
-    }
-
-    function bezierPoint(t){
-        const degree = points.length - 1;
-        for (let r = 1; r <= degree; r++){
-            for (let i = 0; i <= degree - r ; i++) {
-                const multiplicationOne = math.multiply([points[i].x, points[i].y], (1.0 - t));
-                const multiplicationTwo = math.multiply([points[i+1].x, points[i+1].y], t);
-
-                let add = math.add(multiplicationOne, multiplicationTwo);
-                points[i] = {x: add[0], y: add[1]}
-            }
-        }
-        return points[0];
-
-
-    }
 
     function deletePoint(x, y) {
         ctx.clearRect(Math.floor(x), Math.floor(y), 2, 2);
     }
-
 
     function functionManager(e){
         switch (actualTool) {
@@ -176,7 +143,12 @@ window.addEventListener('load', () => { //Função principal, todas as funções
     function confirmDraw(e){
         switch (actualTool){
             case "curve":
+                for(const point in points) {
+                    deletePoint(points[point].x, points[point].y);
+                }
                 curve();
+                markedPoints = [];
+                points = [];
                 break
         }
     }

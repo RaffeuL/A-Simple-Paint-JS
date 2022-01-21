@@ -1,24 +1,35 @@
 import {line} from "./algorithms/line.js";
 import {curve} from './algorithms/curve.js';
 import {circle, getDistance} from "./algorithms/circle.js"
+import {boundary_fill} from "./algorithms/boundary_fill.js";
+import {draw_polygon} from "./algorithms/draw_polygon.js";
+import {Polygon} from "./Polygon.js"
 
 const canvas = document.querySelector("#my-canvas");
 
 //Botões das ferramentas
 const pixelBtn = document.getElementById("pixel-btn");
 const lineBtn = document.getElementById("line-btn");
-const circleBtn = document.getElementById("circle-btn");
 const curveBtn = document.getElementById("curve-btn");
+const circleBtn = document.getElementById("circle-btn");
+const polygonBtn = document.getElementById("polygon-btn");
+const boundaryFillBtn = document.getElementById("boundary-fill-btn");
 const drawBtn = document.getElementById("draw-btn");
 const clearBtn = document.getElementById("clear-btn");
 
 export const ctx = canvas.getContext("2d");
 const size = 10;
 
+// Variáveis gerais
+export let border_color = "rgb(255,0,0)"; // A cor que será utilizada para desenhar tudo
 export let points = [];
 export let markedPoints = [];
 
-let array = [1,2,3];
+// O objeto poligono, a cor deve ser a mesma em border_color, só que no formato RGB
+export var polygon = false;
+// A cor que preencherá os poligonos, também em RGB
+export let fill_color = "rgb(0,0,255)";
+
 
 window.addEventListener('load', () => { //Função principal, todas as funções de draw vem aqui dentro
     canvas.addEventListener('click', functionManager);
@@ -40,6 +51,12 @@ window.addEventListener('load', () => { //Função principal, todas as funções
     });
     circleBtn.addEventListener('click', function (){
         setTool('circle');
+    });
+    polygonBtn.addEventListener('click', function (){
+        setTool('polygon');
+    });
+    boundaryFillBtn.addEventListener('click', function (){
+        setTool('boundaryFill');
     });
     drawBtn.addEventListener('click', confirmDraw);
     clearBtn.addEventListener('click', clearCanvas);
@@ -68,13 +85,12 @@ window.addEventListener('load', () => { //Função principal, todas as funções
     }
 
     function drawInitialPixel(x, y){
-        pixel(x, y, 'gray'); //Desenha o pixel inicial no caso da linha
+        pixel(x, y); //Desenha o pixel inicial no caso da linha
     }
 
-    function pixel(x, y, color='black'){
+    function pixel(x, y, color= border_color){
         ctx.fillStyle = color;
         ctx.fillRect(Math.floor(x), Math.floor(y), 1, 1);
-        ctx.fillStyle = 'black';
     }
 
     function startLine(e){
@@ -114,6 +130,16 @@ window.addEventListener('load', () => { //Função principal, todas as funções
         }
     }
 
+    function start_polygon(e){
+        let point = getMousePos(canvas, e);
+        points.push(point);
+        drawInitialPixel(point.x, point.y);
+    }
+
+    function start_boundary_fill(e){
+        let point = getMousePos(canvas, e);
+        boundary_fill(ctx, Math.floor(point.x), Math.floor(point.y), fill_color, border_color);
+    }
 
     function deletePoint(x, y) {
         ctx.clearRect(Math.floor(x), Math.floor(y), 2, 2);
@@ -132,6 +158,13 @@ window.addEventListener('load', () => { //Função principal, todas as funções
                 break
             case "circle":
                 canvas.addEventListener("click", start_circle(e));
+                break
+            case "boundaryFill":
+                canvas.addEventListener("click", start_boundary_fill(e));
+                break
+            case "polygon":
+                canvas.addEventListener("click", start_polygon(e));
+                break
         }
     }
 
@@ -149,6 +182,11 @@ window.addEventListener('load', () => { //Função principal, todas as funções
                 curve();
                 markedPoints = [];
                 points = [];
+                break
+            case "polygon":
+                polygon = draw_polygon(points);
+                points = [];
+                console.log(polygon.vertices);
                 break
         }
     }

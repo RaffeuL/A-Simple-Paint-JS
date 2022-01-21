@@ -1,5 +1,4 @@
 function circlePoints(ctx, x, y, first_point){
-    ctx.fillStyle = 'black';
     first_point.x = Math.round(first_point.x);
     first_point.y = Math.round(first_point.y);
     ctx.fillRect(x + first_point.x, y + first_point.y, 1, 1);

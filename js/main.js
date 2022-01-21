@@ -3,6 +3,7 @@ import {curve} from './algorithms/curve.js';
 import {circle, getDistance} from "./algorithms/circle.js"
 import {boundary_fill} from "./algorithms/boundary_fill.js";
 import {draw_polygon} from "./algorithms/draw_polygon.js";
+import {scan_line_fill} from "./algorithms/scan_line_fill.js";
 import {Polygon} from "./Polygon.js"
 
 const canvas = document.querySelector("#my-canvas");
@@ -14,6 +15,7 @@ const curveBtn = document.getElementById("curve-btn");
 const circleBtn = document.getElementById("circle-btn");
 const polygonBtn = document.getElementById("polygon-btn");
 const boundaryFillBtn = document.getElementById("boundary-fill-btn");
+const scanlineFillBtn = document.getElementById("scanline-fill-btn");
 const drawBtn = document.getElementById("draw-btn");
 const clearBtn = document.getElementById("clear-btn");
 
@@ -58,6 +60,9 @@ window.addEventListener('load', () => { //Função principal, todas as funções
     boundaryFillBtn.addEventListener('click', function (){
         setTool('boundaryFill');
     });
+    scanlineFillBtn.addEventListener('click', function (){
+        setTool('scanlineFill');
+    });
     drawBtn.addEventListener('click', confirmDraw);
     clearBtn.addEventListener('click', clearCanvas);
 
@@ -89,6 +94,7 @@ window.addEventListener('load', () => { //Função principal, todas as funções
     }
 
     function pixel(x, y, color= border_color){
+        console.log(x, y);
         ctx.fillStyle = color;
         ctx.fillRect(Math.floor(x), Math.floor(y), 1, 1);
     }
@@ -141,6 +147,10 @@ window.addEventListener('load', () => { //Função principal, todas as funções
         boundary_fill(ctx, Math.floor(point.x), Math.floor(point.y), fill_color, border_color);
     }
 
+    function start_scanline(e){
+        scan_line_fill(ctx, polygon, fill_color);
+    }
+
     function deletePoint(x, y) {
         ctx.clearRect(Math.floor(x), Math.floor(y), 2, 2);
     }
@@ -165,6 +175,9 @@ window.addEventListener('load', () => { //Função principal, todas as funções
             case "polygon":
                 canvas.addEventListener("click", start_polygon(e));
                 break
+            case "scanlineFill":
+                canvas.addEventListener("click", start_scanline(e));
+                break
         }
     }
 
@@ -184,9 +197,8 @@ window.addEventListener('load', () => { //Função principal, todas as funções
                 points = [];
                 break
             case "polygon":
-                polygon = draw_polygon(points);
+                polygon = draw_polygon(points,border_color);
                 points = [];
-                console.log(polygon.vertices);
                 break
         }
     }

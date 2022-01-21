@@ -1,11 +1,11 @@
 export function Edge(points){
-    this.y_max = Math.floor(calculate_y_max(points));
-    this.y_min = Math.floor(calculate_y_min(points));
-    this.x_of_y_min = Math.floor(calculate_x_of_y_min(points));
-    this.x1 = Math.floor(points[0].x);
-    this.y1 = Math.floor(points[0].y);
-    this.x2 = Math.floor(points[1].x);
-    this.y2 = Math.floor(points[1].y);
+    this.y_max = calculate_y_max(points);
+    this.y_min = calculate_y_min(points);
+    this.x_of_y_min = calculate_x_of_y_min(points);
+    this.x1 = points[0].x;
+    this.y1 = points[0].y;
+    this.x2 = points[1].x;
+    this.y2 = points[1].y;
 }
 
 function calculate_y_max(points){

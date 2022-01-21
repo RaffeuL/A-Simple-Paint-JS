@@ -29,7 +29,7 @@ function calculate_polygon_y_max(polygon){
             y_max = polygon.edges[edge].y_max;
         }
     }
-    return Math.floor(y_max);
+    return y_max;
 }
 
 function calculate_polygon_y_min(polygon){
@@ -39,5 +39,5 @@ function calculate_polygon_y_min(polygon){
             y_min = polygon.edges[edge].y_min;
         }
     }
-    return Math.floor(y_min);
+    return y_min;
 }

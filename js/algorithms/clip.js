@@ -1,4 +1,5 @@
 import {Point} from "../Point.js";
+import {line} from "./line.js";
 
 export function clip_line(screen, point_1, point_2){
     let bits_1 = generate_codes(screen, point_1);
@@ -13,8 +14,6 @@ export function clip_line(screen, point_1, point_2){
             return false;
         }else{
             let dif_bit = find_dif_bit(bits_1, bits_2);
-            console.log(bits_1, bits_2);
-            console.log(dif_bit);
             let window_line = get_window_line(dif_bit, screen);
             let pi = new Point(0,0);
             let intersection = 0;
@@ -36,6 +35,24 @@ export function clip_line(screen, point_1, point_2){
             }
         }
     }
+}
+
+export function clip_polygon(screen, points){
+    let result = []
+    for (let step = 0; step < points.length; step++) {
+        if (step === points.length - 1){
+            let edge = clip_line(screen, points[points.length-1], points[0]);
+            if (edge !== false) {
+                line(Math.floor(edge[0].x), Math.floor(edge[0].y), Math.floor(edge[1].x), Math.floor(edge[1].y));
+            }
+        }else {
+            let edge = clip_line(screen, points[step], points[step+1]);
+            if (edge !== false) {
+                line(Math.floor(edge[0].x), Math.floor(edge[0].y), Math.floor(edge[1].x), Math.floor(edge[1].y));
+            }
+        }
+    }
+    return result;
 }
 
 function generate_codes(screen, point){

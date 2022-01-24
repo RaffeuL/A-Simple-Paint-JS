@@ -7,7 +7,7 @@ import {scan_line_fill} from "./algorithms/scan_line_fill.js";
 import {translation} from "./algorithms/translation.js";
 import {scale} from "./algorithms/scale.js";
 import {generateCoordinates} from "./algorithms/rotation.js";
-import {clip_line} from "./algorithms/clip.js";
+import {clip_line, clip_polygon} from "./algorithms/clip.js";
 import {Point} from "./Point.js";
 
 const canvas = document.querySelector("#my-canvas");
@@ -20,7 +20,7 @@ const circleBtn = document.getElementById("circle-btn");
 const polygonBtn = document.getElementById("polygon-btn");
 const boundaryFillBtn = document.getElementById("boundary-fill-btn");
 const scanlineFillBtn = document.getElementById("scanline-fill-btn");
-const clipLine = document.getElementById("clip-line-btn");
+const clip = document.getElementById("clip-btn");
 const translationBtn = document.getElementById("translation-btn");
 const scaleBtn = document.getElementById('scale-btn');
 const rotationBtn = document.getElementById('rotation-btn');
@@ -73,8 +73,8 @@ window.addEventListener('load', () => { //Função principal, todas as funções
     scanlineFillBtn.addEventListener('click', function (){
         setTool('scanlineFill');
     });
-    clipLine.addEventListener('click', function (){
-        setTool('clipLine');
+    clip.addEventListener('click', function (){
+        setTool('clip');
     });
     translationBtn.addEventListener('click', function (){
         setTool('translation');
@@ -241,7 +241,7 @@ window.addEventListener('load', () => { //Função principal, todas as funções
             case "scanlineFill":
                 canvas.addEventListener("click", start_scanline(e));
                 break
-            case "clipLine":
+            case "clip":
                 canvas.addEventListener("click", start_clip(e));
                 break
             case "translation":
@@ -266,7 +266,15 @@ window.addEventListener('load', () => { //Função principal, todas as funções
                 points = [];
                 break
             case "polygon":
-                polygon = draw_polygon(points,border_color);
+                for (let i=0;i<points.length;i++){
+                    deletePoint(points[i].x, points[i].y);
+                }
+                if (screen !== false){
+                    points = clip_polygon(screen, points);
+                }
+                if (points.length !== 0) {
+                    polygon = draw_polygon(points, border_color);
+                }
                 points = [];
                 break
         }

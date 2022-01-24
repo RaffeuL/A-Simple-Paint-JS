@@ -129,7 +129,15 @@ window.addEventListener('load', () => { //Função principal, todas as funções
         }
         else{
             points.push(getMousePos(canvas, e));
-            line(Math.floor(points[0].x), Math.floor(points[0].y), Math.floor(points[1].x), Math.floor(points[1].y));
+            let x = points[0].x;
+            let y = points[0].y;
+            if (screen !== false){
+                points = clip_line(screen, points[0], points[1]);
+            }
+            if (points !== false) {
+                line(Math.floor(points[0].x), Math.floor(points[0].y), Math.floor(points[1].x), Math.floor(points[1].y));
+            }
+            deletePoint(x, y);
             points = []; // Depois de desenhar a linha, esvaziar o array ponin
         }
     }

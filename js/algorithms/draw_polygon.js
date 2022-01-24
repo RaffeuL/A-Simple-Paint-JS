@@ -19,6 +19,7 @@ export function draw_polygon(points, border_color){
     }
     polygon.y_max = calculate_polygon_y_max(polygon);
     polygon.y_min = calculate_polygon_y_min(polygon);
+    polygon.points = points;
     return polygon;
 }
 

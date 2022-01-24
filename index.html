@@ -18,13 +18,22 @@
         <button id="polygon-btn" class="btn">Polygon</button>
         <button id="boundary-fill-btn" class="btn">Boundary Fill</button>
         <button id="scanline-fill-btn" class="btn">Scanline Fill</button>
+        <button id="clip-line-btn" class="btn">Clip Line</button>
+        <button id="translation-btn" class="btn">Translation</button>
+        <button id="scale-btn" class="btn">Scale</button>
+        <button id="rotation-btn" class="btn">Rotation</button>
+
         <button id="clear-btn" class="btn">Clear</button>
         <button id="draw-btn" class="btn">Draw</button>
-        <input type="color" value="#00eeff" class="color">
     </div>
     <canvas id="my-canvas" width="150" height="150"></canvas> <!-- novas dimensões -->
+    <div class="footbar">
+        <label>Escala X</label>
+        <input type="range" id="xScale" class="scaleBar" min="1" max="15" step="1" value="1">
+        <label>Escala Y</label>
+        <input type="range" id="yScale" class="scaleBar" min="1" max="15" step="1" value="1">
+    </div>
 </div>
-
     <script src="js/main.js" type="module"></script> <!-- usando agora o main ao inves do index-->
 </body>
 </html>

@@ -5,6 +5,10 @@ import {boundary_fill} from "./algorithms/boundary_fill.js";
 import {draw_polygon} from "./algorithms/draw_polygon.js";
 import {scan_line_fill} from "./algorithms/scan_line_fill.js";
 import {Polygon} from "./Polygon.js"
+import {clip_rectangle} from "./algorithms/clip_rectangle.js";
+import {translation} from "./algorithms/translation.js";
+import {scale} from "./algorithms/scale.js";
+import {generateCoordinates} from "./algorithms/rotation.js";
 
 const canvas = document.querySelector("#my-canvas");
 
@@ -16,6 +20,11 @@ const circleBtn = document.getElementById("circle-btn");
 const polygonBtn = document.getElementById("polygon-btn");
 const boundaryFillBtn = document.getElementById("boundary-fill-btn");
 const scanlineFillBtn = document.getElementById("scanline-fill-btn");
+const clipLine = document.getElementById("clip-line-btn");
+const translationBtn = document.getElementById("translation-btn");
+const scaleBtn = document.getElementById('scale-btn');
+const rotationBtn = document.getElementById('rotation-btn');
+
 const drawBtn = document.getElementById("draw-btn");
 const clearBtn = document.getElementById("clear-btn");
 
@@ -32,7 +41,6 @@ export var polygon = false;
 // A cor que preencherá os poligonos, também em RGB
 export let fill_color = "rgb(0,0,255)";
 
-
 window.addEventListener('load', () => { //Função principal, todas as funções de draw vem aqui dentro
     canvas.addEventListener('click', functionManager);
 
@@ -41,7 +49,7 @@ window.addEventListener('load', () => { //Função principal, todas as funções
 
     let actualTool = 'pixel'; //Ferramenta atual
 
-    //Primeiro cria um botão seguindo o exemplo da de cima e dps a função aq embaixo
+    //Funções pra escutar os botões
     pixelBtn.addEventListener('click', function(){
         setTool('pixel');
     });
@@ -63,6 +71,19 @@ window.addEventListener('load', () => { //Função principal, todas as funções
     scanlineFillBtn.addEventListener('click', function (){
         setTool('scanlineFill');
     });
+    clipLine.addEventListener('click', function (){
+        setTool('clipLine');
+    });
+    translationBtn.addEventListener('click', function (){
+        setTool('translation');
+    });
+    scaleBtn.addEventListener('click', function (){
+        start_scale();
+    });
+    rotationBtn.addEventListener('click', function (){
+        start_rotation();
+    });
+
     drawBtn.addEventListener('click', confirmDraw);
     clearBtn.addEventListener('click', clearCanvas);
 
@@ -94,7 +115,6 @@ window.addEventListener('load', () => { //Função principal, todas as funções
     }
 
     function pixel(x, y, color= border_color){
-        console.log(x, y);
         ctx.fillStyle = color;
         ctx.fillRect(Math.floor(x), Math.floor(y), 1, 1);
     }
@@ -151,6 +171,35 @@ window.addEventListener('load', () => { //Função principal, todas as funções
         scan_line_fill(ctx, polygon, fill_color);
     }
 
+    function start_clip(e){
+        if(points.length === 0){
+            createPoint(e);
+        }else{
+            deletePoint(points[0].x, points[0].y);
+            points.push(getMousePos(canvas, e));
+            clip_rectangle()
+            points = [];
+        }
+
+    }
+
+    function start_translation(e) {
+        let point = getMousePos(canvas, e);
+        let newPoints = translation(polygon.points, point);
+        polygon = draw_polygon(newPoints, border_color);
+        points = [];
+    }
+
+    function start_scale(){
+        scale(polygon.points[0]);
+    }
+
+    function start_rotation(){
+        let points = generateCoordinates();
+        polygon = draw_polygon(points, border_color);
+        points = [];
+    }
+
     function deletePoint(x, y) {
         ctx.clearRect(Math.floor(x), Math.floor(y), 2, 2);
     }
@@ -177,6 +226,12 @@ window.addEventListener('load', () => { //Função principal, todas as funções
                 break
             case "scanlineFill":
                 canvas.addEventListener("click", start_scanline(e));
+                break
+            case "clipLine":
+                canvas.addEventListener("click", start_clip(e));
+                break
+            case "translation":
+                canvas.addEventListener("click", start_translation(e));
                 break
         }
     }

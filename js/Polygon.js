@@ -3,4 +3,5 @@ export function Polygon(border_color, edges){
     this.edges = edges;
     this.y_max = false;
     this.y_min = false;
+    this.points = [];
 }

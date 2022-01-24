@@ -19,6 +19,8 @@ export function draw_polygon(points, border_color){
     }
     polygon.y_max = calculate_polygon_y_max(polygon);
     polygon.y_min = calculate_polygon_y_min(polygon);
+    polygon.x_max = calculate_polygon_x_max(polygon);
+    polygon.x_min = calculate_polygon_x_min(polygon);
     polygon.points = points;
     return polygon;
 }
@@ -41,4 +43,24 @@ function calculate_polygon_y_min(polygon){
         }
     }
     return y_min;
+}
+
+function calculate_polygon_x_max(polygon){
+    let x_max = polygon.edges[0].x_max;
+    for (let edge=0;edge<polygon.edges.length;edge++){
+        if (polygon.edges[edge].x_max > x_max){
+            x_max = polygon.edges[edge].x_max;
+        }
+    }
+    return x_max;
+}
+
+function calculate_polygon_x_min(polygon) {
+    let x_min = polygon.edges[0].x_min;
+    for (let edge = 0; edge < polygon.edges.length; edge++) {
+        if (polygon.edges[edge].x_min < x_min) {
+            x_min = polygon.edges[edge].x_min;
+        }
+    }
+    return x_min;
 }

@@ -4,11 +4,11 @@ import {circle, getDistance} from "./algorithms/circle.js"
 import {boundary_fill} from "./algorithms/boundary_fill.js";
 import {draw_polygon} from "./algorithms/draw_polygon.js";
 import {scan_line_fill} from "./algorithms/scan_line_fill.js";
-import {Polygon} from "./Polygon.js"
-import {clip_rectangle} from "./algorithms/clip_rectangle.js";
 import {translation} from "./algorithms/translation.js";
 import {scale} from "./algorithms/scale.js";
 import {generateCoordinates} from "./algorithms/rotation.js";
+import {clip_line} from "./algorithms/clip.js";
+import {Point} from "./Point.js";
 
 const canvas = document.querySelector("#my-canvas");
 
@@ -40,6 +40,8 @@ export let markedPoints = [];
 export var polygon = false;
 // A cor que preencherá os poligonos, também em RGB
 export let fill_color = "rgb(0,0,255)";
+// Tela para recorte
+export var screen = false;
 
 window.addEventListener('load', () => { //Função principal, todas as funções de draw vem aqui dentro
     canvas.addEventListener('click', functionManager);
@@ -117,6 +119,7 @@ window.addEventListener('load', () => { //Função principal, todas as funções
     function pixel(x, y, color= border_color){
         ctx.fillStyle = color;
         ctx.fillRect(Math.floor(x), Math.floor(y), 1, 1);
+        console.log(x, y);
     }
 
     function startLine(e){
@@ -172,15 +175,18 @@ window.addEventListener('load', () => { //Função principal, todas as funções
     }
 
     function start_clip(e){
+        let point = getMousePos(canvas, e);
         if(points.length === 0){
-            createPoint(e);
+            points.push(point);
+            drawInitialPixel(point.x, point.y);
         }else{
-            deletePoint(points[0].x, points[0].y);
-            points.push(getMousePos(canvas, e));
-            clip_rectangle()
+            points.push(new Point(point.x, points[0].y));
+            points.push(point);
+            points.push(new Point(points[0].x, point.y));
+            screen = draw_polygon(points, border_color);
+            console.log(screen);
             points = [];
         }
-
     }
 
     function start_translation(e) {
@@ -262,6 +268,8 @@ window.addEventListener('load', () => { //Função principal, todas as funções
         ctx.clearRect(0,0,ctx.canvas.width, ctx.canvas.height);
         points = [];
         markedPoints = [];
+        screen = false;
+        polygon = false;
     }
 })
 

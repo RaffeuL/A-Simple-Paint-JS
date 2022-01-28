@@ -16,7 +16,6 @@ export function circle(ctx, radius, first_point) {
     let x = 0;
     let y = radius;
     let d = 1 - radius;
-    //circlePoints(ctx, x, y);
     while (y >= x){
         if (d < 0){
             d += 2 * x + 1;

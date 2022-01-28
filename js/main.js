@@ -192,7 +192,6 @@ window.addEventListener('load', () => { //Função principal, todas as funções
             points.push(point);
             points.push(new Point(points[0].x, point.y));
             screen = draw_polygon(points, border_color);
-            console.log(screen);
             points = [];
         }
     }
@@ -201,7 +200,6 @@ window.addEventListener('load', () => { //Função principal, todas as funções
         let point = getMousePos(canvas, e);
         let newPoints = translation(polygon.points, point);
         polygon = draw_polygon(newPoints, border_color);
-        points = [];
     }
 
     function start_scale(){
@@ -211,7 +209,6 @@ window.addEventListener('load', () => { //Função principal, todas as funções
     function start_rotation(){
         let points = generateCoordinates();
         polygon = draw_polygon(points, border_color);
-        points = [];
     }
 
     function deletePoint(x, y) {
@@ -251,7 +248,6 @@ window.addEventListener('load', () => { //Função principal, todas as funções
     }
 
     function setTool(tool="pixel"){ //Troca de ferramenta
-        console.log("troca de tool " + tool);
         actualTool = tool;
     }
 

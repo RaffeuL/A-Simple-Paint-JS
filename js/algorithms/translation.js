@@ -18,6 +18,7 @@ export function translation(points, newCoordinates){
         newPoints[i].y -= diferenceY;
 
     }
+
     return newPoints
 
 }

@@ -2,8 +2,6 @@ import {polygon} from "../main.js";
 
 import {deletePolygon} from "./translation.js";
 
-let count = 0;
-
 export function generateCoordinates() {
     let degrees = 30;
     let arrayOfVisitedPoints = [];
